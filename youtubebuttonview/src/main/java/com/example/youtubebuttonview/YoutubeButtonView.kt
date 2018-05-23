@@ -79,4 +79,37 @@ class YoutubeButtonView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    data class YoutubeButton (var i : Int, val state : State = State()) {
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            val w : Float = canvas.width.toFloat()
+            val h : Float = canvas.height.toFloat()
+            val size : Float = (Math.min(w, h) / 5) * state.scales[0]
+            val triSize : Float = (Math.min(w, h)/15) * state.scales[1]
+            canvas.save()
+            canvas.translate(w/2, h/2)
+            paint.color = Color.parseColor("#e53935")
+            canvas.drawRoundRect(RectF(-size, -size/2, size, size/2), size/4, size/4, paint)
+            canvas.save()
+            canvas.rotate(90f * state.scales[2])
+            paint.color = Color.WHITE
+            val path : Path = Path()
+            path.moveTo(-triSize/2, triSize/2)
+            path.lineTo(triSize/2, triSize/2)
+            path.lineTo(0f, -triSize/2)
+            path.lineTo(-triSize/2, triSize/2)
+            canvas.drawPath(path, paint)
+            canvas.restore()
+            canvas.restore()
+        }
+
+        fun update(stopcb : (Float) -> Unit) {
+            state.update(stopcb)
+        }
+
+        fun startUpdating(startcb : () -> Unit) {
+            state.startUpdating(startcb)
+        }
+    }
 }
