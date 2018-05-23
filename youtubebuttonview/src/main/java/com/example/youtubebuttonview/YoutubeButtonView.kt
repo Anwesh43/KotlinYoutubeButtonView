@@ -3,6 +3,7 @@ package com.example.youtubebuttonview
 /**
  * Created by anweshmishra on 23/05/18.
  */
+import android.app.Activity
 import android.view.View
 import android.view.MotionEvent
 import android.graphics.*
@@ -135,6 +136,13 @@ class YoutubeButtonView(ctx : Context) : View(ctx) {
             ytButton.startUpdating {
                 animator.start()
             }
+        }
+    }
+    companion object {
+        fun create(activity : Activity) : YoutubeButtonView {
+            val view : YoutubeButtonView = YoutubeButtonView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
