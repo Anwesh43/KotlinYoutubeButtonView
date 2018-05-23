@@ -15,8 +15,13 @@ class YoutubeButtonView(ctx : Context) : View(ctx) {
 
     private val renderer : Renderer = Renderer(this)
 
+    private var youtubeButtonListener : YoutubeButtonListener? = null
     override fun onDraw(canvas : Canvas) {
         renderer.render(canvas, paint)
+    }
+
+    fun addYoutubeButtonListener(onCompleteListener: () -> Unit) {
+        youtubeButtonListener = YoutubeButtonListener(onCompleteListener)
     }
 
     override fun onTouchEvent(event : MotionEvent) : Boolean {
@@ -89,7 +94,7 @@ class YoutubeButtonView(ctx : Context) : View(ctx) {
             val w : Float = canvas.width.toFloat()
             val h : Float = canvas.height.toFloat()
             val size : Float = (Math.min(w, h) / 3) * state.scales[0]
-            val triSize : Float = (Math.min(w, h)/12) * state.scales[1]
+            val triSize : Float = (Math.min(w, h)/9) * state.scales[1]
             canvas.save()
             canvas.translate(w/2, h/2)
             paint.color = Color.parseColor("#e53935")
@@ -126,8 +131,11 @@ class YoutubeButtonView(ctx : Context) : View(ctx) {
             canvas.drawColor(Color.parseColor("#212121"))
             ytButton.draw(canvas, paint)
             animator.animate {
-                ytButton.update {
+                ytButton.update { scale ->
                     animator.stop()
+                    takeIf { scale == 1f }?.apply {
+                        view.youtubeButtonListener?.onCompleteListener?.invoke()
+                    }
                 }
             }
         }
@@ -145,4 +153,6 @@ class YoutubeButtonView(ctx : Context) : View(ctx) {
             return view
         }
     }
+
+    data class YoutubeButtonListener(var onCompleteListener : () -> Unit)
 }
