@@ -88,12 +88,12 @@ class YoutubeButtonView(ctx : Context) : View(ctx) {
         fun draw(canvas : Canvas, paint : Paint) {
             val w : Float = canvas.width.toFloat()
             val h : Float = canvas.height.toFloat()
-            val size : Float = (Math.min(w, h) / 5) * state.scales[0]
-            val triSize : Float = (Math.min(w, h)/15) * state.scales[1]
+            val size : Float = (Math.min(w, h) / 3) * state.scales[0]
+            val triSize : Float = (Math.min(w, h)/12) * state.scales[1]
             canvas.save()
             canvas.translate(w/2, h/2)
             paint.color = Color.parseColor("#e53935")
-            canvas.drawRoundRect(RectF(-size, -size/2, size, size/2), size/4, size/4, paint)
+            canvas.drawRoundRect(RectF(-size, -2 * size / 3, size, 2 * size / 3), size/4, size/4, paint)
             canvas.save()
             canvas.rotate(90f * state.scales[2])
             paint.color = Color.WHITE
