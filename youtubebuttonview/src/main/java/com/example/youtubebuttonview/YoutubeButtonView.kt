@@ -112,4 +112,27 @@ class YoutubeButtonView(ctx : Context) : View(ctx) {
             state.startUpdating(startcb)
         }
     }
+
+    data class Renderer (var view : YoutubeButtonView) {
+
+        val animator : Animator = Animator(view)
+
+        val ytButton : YoutubeButton = YoutubeButton(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#212121"))
+            ytButton.draw(canvas, paint)
+            animator.animate {
+                ytButton.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            ytButton.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
